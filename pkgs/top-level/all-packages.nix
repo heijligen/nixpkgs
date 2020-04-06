@@ -14549,6 +14549,8 @@ in
 
   svrcore = callPackage ../development/libraries/svrcore { };
 
+  svt-av1 = callPackage ../development/libraries/svt-av1 { };
+
   svxlink = libsForQt5.callPackage ../applications/radio/svxlink { };
 
   swiftclient = python3.pkgs.callPackage ../tools/admin/swiftclient { };
