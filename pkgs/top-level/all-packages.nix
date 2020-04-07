@@ -14551,6 +14551,8 @@ in
 
   svt-av1 = callPackage ../development/libraries/svt-av1 { };
 
+  svt-hevc = callPackage ../development/libraries/svt-hevc { };
+
   svxlink = libsForQt5.callPackage ../applications/radio/svxlink { };
 
   swiftclient = python3.pkgs.callPackage ../tools/admin/swiftclient { };

@@ -1,0 +1,26 @@
+From ad1fd13a2318a70eb35ffffd207f22338b0c64e8 Mon Sep 17 00:00:00 2001
+From: Thomas Heijligen <src@posteo.de>
+Date: Tue, 7 Apr 2020 19:24:52 +0200
+Subject: [PATCH 313/313] pkg-config: use CMAKE_INSTALL_FULL for ${prefix}
+
+Signed-off-by: Thomas Heijligen <src@posteo.de>
+---
+ Source/Lib/pkg-config.pc.in | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Source/Lib/pkg-config.pc.in b/Source/Lib/pkg-config.pc.in
+index dbcde29..985c651 100644
+--- a/Source/Lib/pkg-config.pc.in
++++ b/Source/Lib/pkg-config.pc.in
+@@ -1,6 +1,6 @@
+ prefix=@CMAKE_INSTALL_PREFIX@
+-includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@/svt-hevc
+-libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
++includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@/svt-hevc
++libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+ 
+ Name: SvtHevcEnc
+ Description: SVT (Scalable Video Technology) for HEVC encoder library
+-- 
+2.24.1
+
