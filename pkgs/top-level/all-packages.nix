@@ -11495,6 +11495,10 @@ in
     inherit (darwin.apple_sdk.frameworks)
       Cocoa CoreServices CoreAudio AVFoundation MediaToolbox
       VideoDecodeAcceleration;
+    # SVT libraries are experimental an and have bugs, disable by default
+    svt-av1 = null;
+    svt-hevc = null;
+    svt-vp9 = null;
   };
 
   ffmpegthumbnailer = callPackage ../development/libraries/ffmpegthumbnailer { };

@@ -117,6 +117,9 @@
 #, shine ? null # Fixed-point MP3 encoder
 , soxr ? null # Resampling via soxr
 , speex ? null # Speex de/encoder
+, svt-av1 ? null # SVT-AV1 encoder
+, svt-hevc ? null # SVT-HEVC encoder
+, svt-vp9 ? null # SVT-VP9 encoder
 #, twolame ? null # MP2 encoder
 #, utvideo ? null # Ut Video de/encoder
 , vid-stab ? null # Video stabilization
@@ -236,6 +239,11 @@ assert libxcbxfixesExtlib -> libxcb != null;
 assert libxcbshapeExtlib -> libxcb != null;
 assert openglExtlib -> libGL != null && libGLU != null;
 assert opensslExtlib -> gnutls == null && openssl != null && nonfreeLicensing;
+# svt-av1 crashes when used together with libaom
+assert libaom != null -> svt-av1 == null;
+assert svt-av1 != null -> libaom == null;
+# The external patches for svt-av1 can only handle both svt-av1 and svt-hevc or none
+assert svt-vp9 != null -> svt-av1 != null && svt-hevc != null;
 
 stdenv.mkDerivation rec {
   pname = "ffmpeg-full";
@@ -246,7 +254,23 @@ stdenv.mkDerivation rec {
     sha256 = "176jn1lcdf0gk7sa5l2mv0faqp5dsqdhx1gqcrgymqhfmdal4xfb";
   };
 
-  patches = [ ./prefer-libdav1d-over-libaom.patch ];
+  patches = [ ./prefer-libdav1d-over-libaom.patch ]
+    ++ stdenv.lib.optional (svt-hevc != null) [
+      "${svt-hevc.src}/ffmpeg_plugin/0001-lavc-svt_hevc-add-libsvt-hevc-encoder-wrapper.patch"
+      "${svt-hevc.src}/ffmpeg_plugin/0002-doc-Add-libsvt_hevc-encoder-docs.patch"
+    ]
+    ++ stdenv.lib.optional ((svt-av1 != null) && (svt-hevc == null)) [
+      "${svt-av1.src}/ffmpeg_plugin/0001-Add-ability-for-ffmpeg-to-run-svt-av1.patch"
+    ]
+    ++ stdenv.lib.optional ((svt-av1 != null) && (svt-hevc != null)) [
+      "${svt-av1.src}/ffmpeg_plugin/0001-Add-ability-for-ffmpeg-to-run-svt-av1-with-svt-hevc.patch"
+    ]
+    ++ stdenv.lib.optional ((svt-vp9 != null) && (svt-hevc == null) && (svt-av1 == null)) [
+      "${svt-vp9.src}/ffmpeg_plugin/0001-Add-ability-for-ffmpeg-to-run-svt-vp9.patch"
+    ]
+    ++ stdenv.lib.optional ((svt-vp9 != null) && (svt-hevc != null) && (svt-av1 != null)) [
+      "${svt-vp9.src}/ffmpeg_plugin/0001-Add-ability-for-ffmpeg-to-run-svt-vp9-with-svt-hevc-av1.patch"
+    ];
 
   prePatch = ''
     patchShebangs .
@@ -391,6 +415,9 @@ stdenv.mkDerivation rec {
     (enableFeature (SDL2 != null) "sdl2")
     (enableFeature (soxr != null) "libsoxr")
     (enableFeature (speex != null) "libspeex")
+    (if svt-av1 != null then "--enable-libsvtav1" else "")
+    (if svt-hevc != null then "--enable-libsvthevc" else "")
+    (if svt-vp9 != null then "--enable-libsvtvp9" else "")
     #(enableFeature (twolame != null) "libtwolame")
     #(enableFeature (utvideo != null && gplLicensing) "libutvideo")
     (enableFeature (vid-stab != null && gplLicensing) "libvidstab") # Actual min. version 2.0
@@ -423,7 +450,7 @@ stdenv.mkDerivation rec {
     libjack2 ladspaH lame libaom libass libbluray libbs2b libcaca libdc1394 libmodplug libmysofa
     libogg libopus libssh libtheora libvdpau libvorbis libvpx libwebp libX11
     libxcb libXv libXext lzma openal openjpeg libpulseaudio rtmpdump opencore-amr
-    samba SDL2 soxr speex vid-stab vo-amrwbenc wavpack x264 x265 xavs xvidcore
+    samba SDL2 soxr speex svt-av1 svt-hevc svt-vp9 vid-stab vo-amrwbenc wavpack x264 x265 xavs xvidcore
     zeromq4 zlib
   ] ++ optionals openglExtlib [ libGL libGLU ]
     ++ optionals nonfreeLicensing [ fdk_aac openssl ]
