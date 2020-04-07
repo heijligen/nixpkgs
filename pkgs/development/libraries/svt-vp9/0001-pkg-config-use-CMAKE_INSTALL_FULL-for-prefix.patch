@@ -1,0 +1,26 @@
+From 5efd084fc8e21921ad70f97157c54c65a856c84f Mon Sep 17 00:00:00 2001
+From: Thomas Heijligen <src@posteo.de>
+Date: Tue, 7 Apr 2020 19:45:35 +0200
+Subject: [PATCH 43/43] pkg-config: use CMAKE_INSTALL_FULL for ${prefix}
+
+Signed-off-by: Thomas Heijligen <src@posteo.de>
+---
+ Source/Lib/pkg-config.pc.in | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Source/Lib/pkg-config.pc.in b/Source/Lib/pkg-config.pc.in
+index e787102..d88a9d3 100644
+--- a/Source/Lib/pkg-config.pc.in
++++ b/Source/Lib/pkg-config.pc.in
+@@ -1,6 +1,6 @@
+ prefix=@CMAKE_INSTALL_PREFIX@
+-includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@/svt-vp9
+-libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
++includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@/svt-vp9
++libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+ 
+ Name: SvtVp9Enc
+ Description: SVT (Scalable Video Technology) for VP9 encoder library
+-- 
+2.24.1
+
