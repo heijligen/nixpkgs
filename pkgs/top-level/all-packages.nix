@@ -31408,4 +31408,10 @@ in
   xcolor = callPackage ../tools/graphics/xcolor { };
 
   zktree = callPackage ../applications/misc/zktree {};
+
+  qt61 = recurseIntoAttrs (callPackage ../development/libraries/qt-6 {
+    version = "6.1.0";
+  });
+
+  qt6 = qt61;
 }

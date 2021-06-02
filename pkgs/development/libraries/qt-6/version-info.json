@@ -1,0 +1,20 @@
+{
+    "6.1.0" : {
+        "qtbase" : {
+            "sha256" : "165z5mpbszlvc6lmlplj5f6a0yhqzr0anr21v7xw7mdm9lwkmv4z",
+            "patches" : []
+        },
+        "qtwayland" : {
+            "sha256" : "1bazdnf1xbcgplillixap79fxd5ws809k9xp631vvvfc4al5rism",
+            "patches" : []
+        },
+        "qtdeclarative" : {
+            "sha256" : "0315qzw58rvbswvm635nlrg0ma6jn6kbmcj1bgm001bip2aafkaz",
+            "patches" : []
+        },
+        "qtquickcontrols2" : {
+            "sha256" : "0fljhg4bswn0hmjzhawn2z4j5aqkc2fgp3p7kbwn4scc6vhsdb8r",
+            "patches" : []
+        }
+    }
+}
